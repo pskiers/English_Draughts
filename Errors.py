@@ -10,7 +10,7 @@ class PieceOnAWhiteSquareError(ValueError):
     pass
 
 
-class NotAllowedThingOnABoardError(ValueError):
+class NotAllowedThingOnTheBoardError(ValueError):
     pass
 
 
