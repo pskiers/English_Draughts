@@ -15,7 +15,7 @@ class move:
         self.set_destination(x2, y2)
 
     def set_origin(self, new_x: int, new_y: int):
-        if 8 > new_x > -1 or 8 > new_y > -1:
+        if not 8 > new_x > -1 or not 8 > new_y > -1:
             raise CoordinatesNotOnTheBoardError()
         elif new_x % 2 == new_y % 2:
             raise ChosenWitheSquareError()
@@ -23,7 +23,7 @@ class move:
             self._origin = (new_x, new_y)
 
     def set_destination(self, new_x: int, new_y: int):
-        if 8 > new_x > -1 or 8 > new_y > -1:
+        if not 8 > new_x > -1 or not 8 > new_y > -1:
             raise CoordinatesNotOnTheBoardError()
         elif new_x % 2 == new_y % 2:
             raise ChosenWitheSquareError()
