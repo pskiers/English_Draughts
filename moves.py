@@ -7,6 +7,15 @@ from Errors import (
 
 class move:
     """
+    Class move represents move of a pawn from dark square to dark square
+
+    Contains atributes:
+    :param origin: original position of the pawn
+    :param type: Tuple[int, int]
+    :param destination: pawn's position after the move
+    :param type: Tuple[int, int]
+
+    Contains standard seters and geters
     """
     def __init__(self, move_from: Tuple[int, int], move_to: Tuple[int, int]):
         x1, y1 = move_from
