@@ -20,3 +20,11 @@ class NonIterableRowError(TypeError):
 
 class NonIterableBoardError(TypeError):
     pass
+
+
+class CoordinatesNotOnTheBoardError(ValueError):
+    pass
+
+
+class ChosenWitheSquareError(ValueError):
+    pass
