@@ -1,7 +1,9 @@
 from typing import Tuple
 from Errors import (
     CoordinatesNotOnTheBoardError,
-    ChosenWitheSquareError
+    ChosenWitheSquareError,
+    NotAPushMoveError,
+    NotACaptureMoveError,
 )
 
 
@@ -47,8 +49,28 @@ class move:
 
 
 class push(move):
-    pass
+    """
+    Class push is a subclass of class move. Class push represents a push.
+    It contains all the atributes and methods of class move.
+    """
+    def __init__(self, move_from: Tuple[int, int], move_to: Tuple[int, int]):
+        x1, y1 = move_from
+        x2, y2 = move_to
+        if abs(x1 - x2) != abs(y1 - y2) or abs(x1 - x2) != 1:
+            raise NotAPushMoveError()
+        else:
+            super().__init__(move_from, move_to)
 
 
 class capture(move):
-    pass
+    """
+    Class capture is a subclass of class move. Class capture represents a
+    capture. It contains all the atributes and methods of class move.
+    """
+    def __init__(self, move_from: Tuple[int, int], move_to: Tuple[int, int]):
+        x1, y1 = move_from
+        x2, y2 = move_to
+        if abs(x1 - x2) != abs(y1 - y2) or abs(x1 - x2) != 2:
+            raise NotACaptureMoveError()
+        else:
+            super().__init__(move_from, move_to)

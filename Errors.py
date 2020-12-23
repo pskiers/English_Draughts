@@ -28,3 +28,11 @@ class CoordinatesNotOnTheBoardError(ValueError):
 
 class ChosenWitheSquareError(ValueError):
     pass
+
+
+class NotAPushMoveError(ValueError):
+    pass
+
+
+class NotACaptureMoveError(ValueError):
+    pass
