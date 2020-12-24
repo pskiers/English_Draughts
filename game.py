@@ -11,6 +11,14 @@ from Errors import (
 
 class game:
     """
+    Class game represents a game of english draugths.
+    Contains artibute:
+    :param gameboard: gameboard
+
+    Cotains methods:
+    maka_a_move:
+        makes a move on the gameboard
+    standard geters and functions auxiliary to method make_a_move 
     """
     def __init__(self, board: 'game_board'):
         self._gameboard = board.board()
