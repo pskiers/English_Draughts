@@ -52,3 +52,11 @@ class CapturingNothingError(ValueError):
 
 class CapturingYourOwnPiceError(ValueError):
     pass
+
+
+class NotAMoveError(TypeError):
+    pass
+
+
+class PawnMovingBackwardsError(ValueError):
+    pass
