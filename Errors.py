@@ -36,3 +36,19 @@ class NotAPushMoveError(ValueError):
 
 class NotACaptureMoveError(ValueError):
     pass
+
+
+class SquareTakenError(ValueError):
+    pass
+
+
+class NoPieceOnTheSquareError(ValueError):
+    pass
+
+
+class CapturingNothingError(ValueError):
+    pass
+
+
+class CapturingYourOwnPiceError(ValueError):
+    pass
