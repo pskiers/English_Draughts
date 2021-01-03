@@ -27,9 +27,14 @@ class game_board:
 
     def __str__(self):
         board = ''
+        i = 0
         for row in self.board():
+            board += str(i)
+            board += ' '
             board += str(row)
             board += '\n'
+            i += 1
+        board += '    0    1    2    3    4    5    6    7  '
         return board
 
     def board(self):

@@ -22,7 +22,10 @@ class Player():
 
     def get_move(self):
         if self.ai() == 0:
-            x1, y1, x2, y2 = input('Enter coodrnates of your move')
+            x1 = int(input('In which row is the piece you want to move '))
+            y1 = int(input('In which column is the piece you want to move '))
+            x2 = int(input('To which row you want to move the piece '))
+            y2 = int(input('To which column you want to move the piece '))
             return x1, y1, x2, y2
         else:
             # AI not implemented yet
