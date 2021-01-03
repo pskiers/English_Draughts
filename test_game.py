@@ -22,7 +22,7 @@ def test_just_move():
     board = game_board()
     game1 = game(board)
     assert game1.gameboard() == board.board()
-    game1.just_move(5, 0, 4, 1)
+    game1.just_move(5, 0, 4, 1, 0)
     board2 = [
         [' ', 'x', ' ', 'x', ' ', 'x', ' ', 'x'],
         ['x', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
@@ -41,14 +41,14 @@ def test_just_bad_move():
     game1 = game(board)
     assert game1.gameboard() == board.board()
     with pytest.raises(SquareTakenError):
-        game1.just_move(6, 1, 5, 0)
+        game1.just_move(6, 1, 5, 0, 0)
 
 
 def test_standard_move_an_o():
     board = game_board()
     game1 = game(board)
     assert game1.gameboard() == board.board()
-    game1.move_an_o(5, 0, 4, 1)
+    game1.move_an_o(5, 0, 4, 1, 0)
     board2 = [
         [' ', 'x', ' ', 'x', ' ', 'x', ' ', 'x'],
         ['x', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
@@ -76,7 +76,7 @@ def test_move_an_o_to_king():
     board = game_board(board1)
     game1 = game(board)
     assert game1.gameboard() == board.board()
-    game1.move_an_o(1, 0, 0, 1)
+    game1.move_an_o(1, 0, 0, 1, 0)
     board2 = [
         [' ', 'O', ' ', 'x', ' ', 'x', ' ', 'x'],
         [' ', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
@@ -105,14 +105,14 @@ def test_bad_move_an_o():
     game1 = game(board)
     assert game1.gameboard() == board.board()
     with pytest.raises(PawnMovingBackwardsError):
-        game1.move_an_o(4, 1, 5, 0)
+        game1.move_an_o(4, 1, 5, 0, 0)
 
 
 def test_standard_move_an_x():
     board = game_board()
     game1 = game(board)
     assert game1.gameboard() == board.board()
-    game1.move_an_x(2, 1, 3, 0)
+    game1.move_an_x(2, 1, 3, 0, 0)
     board2 = [
         [' ', 'x', ' ', 'x', ' ', 'x', ' ', 'x'],
         ['x', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
@@ -140,7 +140,7 @@ def test_move_an_x_to_king():
     board = game_board(board1)
     game1 = game(board)
     assert game1.gameboard() == board.board()
-    game1.move_an_x(6, 1, 7, 0)
+    game1.move_an_x(6, 1, 7, 0, 0)
     board2 = [
         [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
         ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
@@ -169,7 +169,7 @@ def test_bad_move_an_x():
     game1 = game(board)
     assert game1.gameboard() == board.board()
     with pytest.raises(PawnMovingBackwardsError):
-        game1.move_an_x(3, 0, 2, 1)
+        game1.move_an_x(3, 0, 2, 1, 0)
 
 
 def test_remove_captured_piece():
