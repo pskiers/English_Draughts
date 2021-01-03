@@ -60,3 +60,7 @@ class NotAMoveError(TypeError):
 
 class PawnMovingBackwardsError(ValueError):
     pass
+
+
+class InvalidNameError(ValueError):
+    pass
