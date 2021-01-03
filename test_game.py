@@ -424,3 +424,37 @@ def test_bad_make_a_move():
     assert game1.gameboard() == board.board()
     with pytest.raises(NotAMoveError):
         game1.make_a_move('move')
+
+
+def test_check_for_captures_TRUE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    game1 = game(board)
+    assert game1.gameboard() == board.board()
+    assert game1.check_for_captures(1) == 1
+
+
+def test_check_for_captures_FALSE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    game1 = game(board)
+    assert game1.gameboard() == board.board()
+    assert game1.check_for_captures(0) == 0

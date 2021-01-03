@@ -1,4 +1,6 @@
 from game_board import game_board
+from moves import capture
+from players import Player
 from Errors import (
     SquareTakenError,
     NoPieceOnTheSquareError,
@@ -21,6 +23,7 @@ class game:
     standard geters and functions auxiliary to method make_a_move
     """
     def __init__(self, board: 'game_board'):
+        self.board = board
         self._gameboard = board.board()
 
     def gameboard(self):
@@ -81,3 +84,31 @@ class game:
             if x2 == 7:
                 self.gameboard()[x1][y1] = 'X'
             self.just_move(x1, y1, x2, y2)
+
+    def play(self, player0: 'Player', player1: 'Player'):
+        turn = 0
+        while True:
+            if turn == 0:
+                x1, y1, x2, y2 = player0.get_move()
+            else:
+                x1, y1, x2, y2 = player1.get_move()
+
+    def check_for_captures(self, who: bool):
+        test = game(self.board)
+        jump = [-2, 2]
+        if who == 0:
+            goodPieces = ['x', 'X']
+        else:
+            goodPieces = ['o', 'O']
+        for i in range(len(test.gameboard())):
+            for j in range((i+1) % 2, len(test.gameboard()[i]), 2):
+                if test.gameboard()[i][j] in goodPieces:
+                    for dx in jump:
+                        for dy in jump:
+                            try:
+                                move = capture((i, j), (i+dx, j+dy))
+                                test.make_a_move(move)
+                                return True
+                            except:
+                                continue
+        return False
