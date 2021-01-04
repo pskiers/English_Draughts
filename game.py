@@ -9,6 +9,10 @@ from Errors import (
     CapturingYourOwnPiceError,
     NotAMoveError,
     PawnMovingBackwardsError,
+    CoordinatesNotOnTheBoardError,
+    ChosenWitheSquareError,
+    NotAPushMoveError,
+    NotACaptureMoveError,
 )
 
 
@@ -100,33 +104,98 @@ class game:
 
     def play(self, player0: 'Player', player1: 'Player'):
         turn = 1
+        pieces = [
+            ['o', 'O'],
+            ['x', 'X'],
+        ]
+        names = [player0.name, player1.name]
+        moves_to_draw = 30
         while True:
             print(self.board)
+            if moves_to_draw == 0:
+                print('Game ended in a draw')
+                break
             if self.can_make_a_move(turn, 1):
+                print(f"It is {names[turn]}'s turn")
                 if turn == 0:
-                    x1, y1, x2, y2 = player0.get_move()
+                    try:
+                        x1, y1, x2, y2 = player0.get_move()
+                    except Exception:
+                        print('Please enter real coordinates')
+                        continue
                 else:
-                    x1, y1, x2, y2 = player1.get_move()
+                    try:
+                        x1, y1, x2, y2 = player1.get_move()
+                    except Exception:
+                        print('Please enter real coordinates')
+                        continue
                 try:
                     move = capture((x1, y1), (x2, y2))
-                except:
+                    moves_to_draw = 30
+                except CoordinatesNotOnTheBoardError:
+                    print('Please enter coordinates that are on the board')
+                    continue
+                except ChosenWitheSquareError:
+                    print('Coordinates cannot point on a white sqare')
+                    continue
+                except NotACaptureMoveError:
+                    print('You must make a capture move, if you can')
+                    continue
+                except (TypeError, ValueError):
+                    print('Please enter some real coordinates')
                     continue
             else:
                 if not self.can_make_a_move(turn, 0):
-                    print('Some text informing about who won')
+                    print(f'{names[turn]} has lost')
                     break
+                print(f"It is {names[turn]}'s turn")
                 if turn == 0:
-                    x1, y1, x2, y2 = player0.get_move()
+                    try:
+                        x1, y1, x2, y2 = player0.get_move()
+                    except Exception:
+                        print('Please enter real coordinates')
+                        continue
                 else:
-                    x1, y1, x2, y2 = player1.get_move()
+                    try:
+                        x1, y1, x2, y2 = player1.get_move()
+                    except Exception:
+                        print('Please enter real coordinates')
+                        continue
                 try:
                     move = push((x1, y1), (x2, y2))
-                except:
+                    moves_to_draw -= 1
+                except CoordinatesNotOnTheBoardError:
+                    print('Please enter coordinates that are on the board')
+                    continue
+                except ChosenWitheSquareError:
+                    print('Coordinates cannot point to a white sqare')
+                    continue
+                except NotAPushMoveError:
+                    print('You must make a push since only those are possible')
+                    continue
+                except (TypeError, ValueError):
+                    print('Please enter some real coordinates')
                     continue
             pormotion = self.is_it_a_promotion(x1, y1, x2)
+            if self.gameboard()[x1][y1] in pieces[turn]:
+                print('You can only move your own pieces')
+                continue
             try:
                 self.make_a_move(move)
-            except:
+            except SquareTakenError:
+                print('You cannot move to a sqare that is already taken')
+                continue
+            except NoPieceOnTheSquareError:
+                print('You cannot move nothing')
+                continue
+            except CapturingNothingError:
+                print('You cannot capture nothing')
+                continue
+            except CapturingYourOwnPiceError:
+                print('You cannot capture your own piece')
+                continue
+            except PawnMovingBackwardsError:
+                print('You cannot move backwards')
                 continue
             if not pormotion:
                 if not self.check_if_piece_can_move(x2, y2, 1):
@@ -159,7 +228,7 @@ class game:
                         move = push((x, y), (x+dx, y+dy))
                     test.make_a_move(move)
                     return True
-                except:
+                except Exception:
                     continue
         return False
 
