@@ -50,7 +50,7 @@ class game:
         captured = self.gameboard()[rmx][rmy]
         if captured == ' ':
             raise CapturingNothingError()
-        elif captured == self.gameboard()[x1][y1]:
+        elif captured.lower() == self.gameboard()[x1][y1].lower():
             raise CapturingYourOwnPiceError()
         else:
             self.gameboard()[rmx][rmy] = ' '
@@ -197,8 +197,13 @@ class game:
             except PawnMovingBackwardsError:
                 print('You cannot move backwards')
                 continue
-            if not pormotion:
-                if not self.check_if_piece_can_move(x2, y2, 1):
+            if pormotion:
+                turn = (turn + 1) % 2
+            else:
+                if type(move).__name__ == 'capture':
+                    if not self.check_if_piece_can_move(x2, y2, 1):
+                        turn = (turn + 1) % 2
+                else:
                     turn = (turn + 1) % 2
 
     def can_make_a_move(self, who: bool, capt: bool):
@@ -233,8 +238,8 @@ class game:
         return False
 
 
-pl0 = Player('adam', 0)
-pl1 = Player('bartosz', 0)
+pl0 = Player('Carlsen', 0)
+pl1 = Player('nakamura', 0)
 board1 = [
     [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
     ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
@@ -245,6 +250,6 @@ board1 = [
     [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
     [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
 ]
-board = game_board(board1)
+board = game_board()
 game1 = game(board)
 game1.play(pl0, pl1)
