@@ -673,3 +673,63 @@ def test_is_it_a_promotion_justFALSE():
     ]
     board = game_board(board1)
     assert board.is_it_a_promotion(5, 2, 4) == 0
+
+
+def test_is_this_move_legal_capture_TRUE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.is_this_move_legal(7, 2, -2, -2, 1) == 1
+
+
+def test_is_this_move_legal_capture_FALSE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        ['x', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.is_this_move_legal(7, 2, -2, -2, 1) == 0
+
+
+def test_is_this_move_legal_push_TRUE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.is_this_move_legal(5, 2, -1, -1, 0) == 1
+
+
+def test_is_this_move_legal_push_FALSE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.is_this_move_legal(7, 2, -1, -1, 0) == 0

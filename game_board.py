@@ -247,19 +247,37 @@ class game_board:
             jump = [-2, 2]
         else:
             jump = [-1, 1]
-        test = deepcopy(self)
         for dx in jump:
             for dy in jump:
-                try:
-                    if capt:
-                        move = capture((x, y), (x+dx, y+dy))
-                    else:
-                        move = push((x, y), (x+dx, y+dy))
-                    test.make_a_move(move)
+                if self.is_this_move_legal(x, y, dx, dy, capt):
                     return True
-                except Exception:
-                    continue
         return False
+
+    def is_this_move_legal(self, x, y, dx, dy, capt):
+        """
+        is_this_move_legal method checks if certain move is legal
+
+        :param x: row in which the piece is
+        :param type: int
+        :param y: column in which the piece is
+        :param type: int
+        :param dx: difference in x-coordinate
+        :param type: int
+        :param dy: difference in y-coordinate
+        :param type: int
+        :param capt: do we check for captures (1) or for pushes (0)
+        :param type: bool
+        """
+        test = deepcopy(self)
+        try:
+            if capt:
+                move = capture((x, y), (x+dx, y+dy))
+            else:
+                move = push((x, y), (x+dx, y+dy))
+            test.make_a_move(move)
+            return True
+        except Exception:
+            return False
 
     def is_it_a_promotion(self, x1, y1, x2):
         """
