@@ -337,20 +337,3 @@ class game:
                 except Exception:
                     continue
         return False
-
-
-pl0 = Player('Carlsen', 0)
-pl1 = Player('nakamura', 0)
-board1 = [
-    [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
-    ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
-    [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
-    [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
-    [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
-]
-board = game_board()
-game1 = game(board)
-game1.play(pl0, pl1)
