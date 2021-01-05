@@ -12,15 +12,15 @@ class game_board:
     """
     Class game_board represents state of the game
 
-    Contains atribute:
+    Contains attribute:
     :param board: game board
     :param type: list
 
     Contains methods:
     board():
-        returns value of board atribute
+        returns value of board attribute
     set_board():
-        sets value of board atribute
+        sets value of board attribute
     """
     def __init__(self, board=None):
         self.set_board(board)
@@ -41,6 +41,9 @@ class game_board:
         return self._board
 
     def set_board(self, newboard):
+        """
+        standard setter for board attribute
+        """
         if not newboard:
             self._board = [
                 [' ', 'x', ' ', 'x', ' ', 'x', ' ', 'x'],

@@ -21,6 +21,9 @@ class Player():
         return self._ai
 
     def get_move(self):
+        """
+        get_move method reads coordinates of a move player wants to make
+        """
         if self.ai() == 0:
             x1 = int(input('In which row is the piece you want to move '))
             y1 = int(input('In which column is the piece you want to move '))

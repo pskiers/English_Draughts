@@ -11,7 +11,7 @@ class move:
     """
     Class move represents move of a pawn from dark square to dark square
 
-    Contains atributes:
+    Contains attributes:
     :param origin: original position of the pawn
     :param type: Tuple[int, int]
     :param destination: pawn's position after the move
@@ -26,6 +26,9 @@ class move:
         self.set_destination(x2, y2)
 
     def set_origin(self, new_x: int, new_y: int):
+        """
+        standard setter for origin attribute
+        """
         if not 8 > new_x > -1 or not 8 > new_y > -1:
             raise CoordinatesNotOnTheBoardError()
         elif new_x % 2 == new_y % 2:
@@ -34,6 +37,9 @@ class move:
             self._origin = (new_x, new_y)
 
     def set_destination(self, new_x: int, new_y: int):
+        """
+        standard setter for destination attribute
+        """
         if not 8 > new_x > -1 or not 8 > new_y > -1:
             raise CoordinatesNotOnTheBoardError()
         elif new_x % 2 == new_y % 2:

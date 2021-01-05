@@ -19,7 +19,7 @@ from Errors import (
 class game:
     """
     Class game represents a game of english draugths.
-    Contains artibute:
+    Contains attribute:
     :param gameboard: gameboard
     :param board: obj game_board
     """
