@@ -1,4 +1,5 @@
 from Errors import InvalidNameError
+from game_board import game_board
 
 
 class Player():
@@ -20,7 +21,7 @@ class Player():
     def ai(self):
         return self._ai
 
-    def get_move(self):
+    def get_move(self, gameboard: 'game_board'):
         """
         get_move method reads coordinates of a move player wants to make
         """

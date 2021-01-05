@@ -204,13 +204,13 @@ class game:
                 print(f"It is {names[turn]}'s turn")
                 if turn == 0:
                     try:
-                        x1, y1, x2, y2 = player0.get_move()
+                        x1, y1, x2, y2 = player0.get_move(self.board)
                     except Exception:
                         print('Please enter real coordinates')
                         continue
                 else:
                     try:
-                        x1, y1, x2, y2 = player1.get_move()
+                        x1, y1, x2, y2 = player1.get_move(self.board)
                     except Exception:
                         print('Please enter real coordinates')
                         continue
@@ -236,13 +236,13 @@ class game:
                 print(f"It is {names[turn]}'s turn")
                 if turn == 0:
                     try:
-                        x1, y1, x2, y2 = player0.get_move()
+                        x1, y1, x2, y2 = player0.get_move(self.board)
                     except Exception:
                         print('Please enter real coordinates')
                         continue
                 else:
                     try:
-                        x1, y1, x2, y2 = player1.get_move()
+                        x1, y1, x2, y2 = player1.get_move(self.board)
                     except Exception:
                         print('Please enter real coordinates')
                         continue
