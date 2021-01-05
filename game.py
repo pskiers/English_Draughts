@@ -169,9 +169,13 @@ class game:
         if self.gameboard()[x1][y1] == 'x':
             if x2 == 7:
                 return True
+            else:
+                return False
         elif self.gameboard()[x1][y1] == 'o':
             if x2 == 0:
                 return True
+            else:
+                return False
         else:
             return False
 
@@ -292,7 +296,7 @@ class game:
         can_make_a_move method checks if certain player can make a move of
         certain type
 
-        :param who: do we check player1 (1) or player0 (0)?
+        :param who: do we check player0 ('o') (1) or player1 ('x') (0)?
         :param type: bool
         :param capt: do we check for captures (1) or for pushes (0)
         :param type: bool
