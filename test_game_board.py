@@ -493,3 +493,123 @@ def test_bad_make_a_move():
     board = game_board()
     with pytest.raises(NotAMoveError):
         board.make_a_move('move')
+
+
+def test_check_for_captures_TRUE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.can_make_a_move(1, 1) == 1
+
+
+def test_check_for_captures_FALSE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.can_make_a_move(0, 1) == 0
+
+
+def test_check_for_pushes_TRUE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.can_make_a_move(0, 0) == 1
+
+
+def test_check_for_pushes_FALSE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', 'o', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'o', ' ', 'o', ' ', 'o', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        ['o', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.can_make_a_move(0, 0) == 0
+
+
+def test_check_if_piece_can_move_Capt_TRUE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.check_if_piece_can_move(7, 2, 1) == 1
+
+
+def test_check_if_piece_can_move_Capt_FALSE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.check_if_piece_can_move(5, 2, 1) == 0
+
+
+def test_check_if_piece_can_move_Push_FALSE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.check_if_piece_can_move(7, 2, 0) == 0
+
+
+def test_check_if_piece_can_move_Push_TRUE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.check_if_piece_can_move(5, 2, 0) == 1

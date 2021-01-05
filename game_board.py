@@ -13,6 +13,7 @@ from Errors import (
     PawnMovingBackwardsError,
 )
 from moves import push, capture
+from copy import deepcopy
 
 
 class game_board:
@@ -208,3 +209,54 @@ class game_board:
             if x2 == 7:
                 self.board()[x1][y1] = 'X'
             self.just_move(x1, y1, x2, y2, op)
+
+    def can_make_a_move(self, who: bool, capt: bool):
+        """
+        can_make_a_move method checks if certain player can make a move of
+        certain type
+
+        :param who: do we check player0 ('o') (1) or player1 ('x') (0)?
+        :param type: bool
+        :param capt: do we check for captures (1) or for pushes (0)
+        :param type: bool
+        """
+        if who == 0:
+            goodPieces = ['x', 'X']
+        else:
+            goodPieces = ['o', 'O']
+        for i in range(len(self.board())):
+            for j in range((i+1) % 2, len(self.board()[i]), 2):
+                if self.board()[i][j] in goodPieces:
+                    if self.check_if_piece_can_move(i, j, capt):
+                        return True
+        return False
+
+    def check_if_piece_can_move(self, x, y, capt: bool):
+        """
+        check_if_piece_can_move method checks if certain piece can make
+        certain move
+
+        :param x: row in which the piece is
+        :param type: int
+        :param y: column in which the piece is
+        :param type: int
+        :param capt: do we check for captures (1) or for pushes (0)
+        :param type: bool
+        """
+        if capt:
+            jump = [-2, 2]
+        else:
+            jump = [-1, 1]
+        test = deepcopy(self)
+        for dx in jump:
+            for dy in jump:
+                try:
+                    if capt:
+                        move = capture((x, y), (x+dx, y+dy))
+                    else:
+                        move = push((x, y), (x+dx, y+dy))
+                    test.make_a_move(move)
+                    return True
+                except Exception:
+                    continue
+        return False
