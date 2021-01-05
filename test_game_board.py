@@ -613,3 +613,63 @@ def test_check_if_piece_can_move_Push_TRUE():
     ]
     board = game_board(board1)
     assert board.check_if_piece_can_move(5, 2, 0) == 1
+
+
+def test_is_it_a_promotion_o_TRUE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.is_it_a_promotion(1, 0, 0) == 1
+
+
+def test_is_it_a_promotion_x_TRUE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.is_it_a_promotion(6, 1, 7) == 1
+
+
+def test_is_it_a_promotion_FALSE_alreadyKing():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['O', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.is_it_a_promotion(1, 0, 0) == 0
+
+
+def test_is_it_a_promotion_justFALSE():
+    board1 = [
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        ['o', ' ', 'x', ' ', 'x', ' ', 'x', ' '],
+        [' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+        [' ', 'x', ' ', 'o', ' ', 'o', ' ', 'o'],
+        [' ', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
+    ]
+    board = game_board(board1)
+    assert board.is_it_a_promotion(5, 2, 4) == 0

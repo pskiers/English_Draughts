@@ -260,3 +260,28 @@ class game_board:
                 except Exception:
                     continue
         return False
+
+    def is_it_a_promotion(self, x1, y1, x2):
+        """
+        is_it_a_promotion method checks whether the move will result in a
+        promotion to king
+
+        :param x1: starting row of the moving piece
+        :param type: int
+        :param y1: starting column of the moving piece
+        :param type: int
+        :param x2: destination row of the moving piece
+        :param type: int
+        """
+        if self.board()[x1][y1] == 'x':
+            if x2 == 7:
+                return True
+            else:
+                return False
+        elif self.board()[x1][y1] == 'o':
+            if x2 == 0:
+                return True
+            else:
+                return False
+        else:
+            return False
