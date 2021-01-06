@@ -91,7 +91,7 @@ def get_all_moves(board: 'game_board', turn: bool):
     return all_the_right_moves
 
 
-def alp_bet(board: 'game_board', turn, depth, alpha=-1000, beta=1000):
+def alp_bet(board: 'game_board', turn, depth, alpha=-1000000, beta=1000000):
     """
     Function alp_bet is a standard alpha-beta pruning for english draghts
 
@@ -167,9 +167,11 @@ def algorithm(board: 'game_board', turn, depth):
         new_t = change_turn(turn, new_board, prom, move)
         if turn:
             if alp_bet(new_board, new_t, depth-1) > best_evaluation:
+                best_evaluation = alp_bet(new_board, new_t, depth-1)
                 best_move = move
         else:
             if alp_bet(new_board, new_t, depth-1) < best_evaluation:
+                best_evaluation = alp_bet(new_board, new_t, depth-1)
                 best_move = move
     x1, y1 = best_move.origin()
     x2, y2 = best_move.destination()

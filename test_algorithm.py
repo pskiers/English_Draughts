@@ -1,4 +1,4 @@
-from algorithm import get_all_moves, evaluate, alp_bet
+from algorithm import get_all_moves, evaluate, alp_bet, algorithm
 from game_board import game_board
 from moves import capture, push
 
@@ -114,4 +114,30 @@ def test_evaluate_one_side_with_no_moves():
 
 
 def test_alp_bet_standard():
-    pass
+    board1 = [
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', 'x', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', 'x', ' '],
+        [' ', ' ', ' ', ' ', ' ', 'o', ' ', 'o'],
+        [' ', ' ', ' ', ' ', 'o', ' ', ' ', ' '],
+    ]
+    board = game_board(board1)
+    assert alp_bet(board, 0, 3) == 15
+
+
+def test_algorithm():
+    board1 = [
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', 'x', ' ', 'x', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', 'o', ' ', ' ', ' ', ' ', ' ', 'x'],
+        [' ', ' ', ' ', ' ', ' ', ' ', 'x', ' '],
+        [' ', ' ', ' ', ' ', ' ', 'o', ' ', 'o'],
+        [' ', ' ', ' ', ' ', 'o', ' ', ' ', ' '],
+    ]
+    board = game_board(board1)
+    assert algorithm(board, 0, 3) == (2, 1, 3, 2)
