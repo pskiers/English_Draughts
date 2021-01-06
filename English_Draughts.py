@@ -6,8 +6,8 @@ from game_board import game_board
 def main():
     board = game_board()
     new_game = game(board)
-    player0 = Player('nakamura', 1)
-    player1 = Player('carlsen', 1)
+    player0 = Player('carlsen', 1)
+    player1 = Player('nakamura', 1)
     new_game.play(player0, player1)
 
 
