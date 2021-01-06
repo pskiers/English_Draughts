@@ -16,42 +16,38 @@ def evaluate(board: 'game_board', turn):
     estimation = 0
     if not board.can_make_a_move(turn, 1):
         if not board.can_make_a_move(turn, 0):
-            return 1000 * ((turn * 2) - 1)
-    state = board.board()
-    for row in state:
-        for square in row:
+            return 1000 * (1 - (turn * 2))
+    for x in range(len(board.board())):
+        for y in range((x+1) % 2, len(board.board()[x]), 2):
+            square = board.board()[x][y]
             if square == 'X':
                 estimation -= 20
                 pos_value = 0
-                if state.index(row) == 7 or state.index(row) == 0:
+                if x == 7 or x == 0:
                     pos_value -= 1
-                if row.index(square) == 0 or row.index(square) == 7:
+                if y == 0 or y == 7:
                     pos_value -= 1
                 estimation += pos_value
             elif square == 'O':
                 estimation += 20
                 pos_value = 0
-                if state.index(row) == 7 or state.index(row) == 0:
+                if x == 7 or x == 0:
                     pos_value += 1
-                if row.index(square) == 0 or row.index(square) == 7:
+                if y == 0 or y == 7:
                     pos_value += 1
                 estimation += pos_value
             elif square == 'x':
                 estimation -= 10
                 pos_value = 0
-                x = state.index(row)
-                y = row.index(square)
-                pos_value -= state.index(row)
-                if row.index(square) == 0 or row.index(square) == 7:
+                pos_value -= x
+                if y == 0 or y == 7:
                     pos_value -= 1
                 estimation += pos_value
             elif square == 'o':
                 estimation += 10
                 pos_value = 0
-                x = state.index(row)
-                y = row.index(square)
-                pos_value += (7 - state.index(row))
-                if row.index(square) == 0 or row.index(square) == 7:
+                pos_value += (7 - x)
+                if y == 0 or y == 7:
                     pos_value += 1
                 estimation += pos_value
             else:
