@@ -18,12 +18,12 @@ def evaluate(board: 'game_board', turn):
     estimation = 0
     if not board.can_make_a_move(turn, 1):
         if not board.can_make_a_move(turn, 0):
-            return 1000 * (1 - (turn * 2))
+            return 1000000 * (1 - (turn * 2))
     for x in range(len(board.board())):
         for y in range((x+1) % 2, len(board.board()[x]), 2):
             square = board.board()[x][y]
             if square == 'X':
-                estimation -= 20
+                estimation -= 40
                 pos_value = 0
                 if x == 7 or x == 0:
                     pos_value -= 1
@@ -31,7 +31,7 @@ def evaluate(board: 'game_board', turn):
                     pos_value -= 1
                 estimation += pos_value
             elif square == 'O':
-                estimation += 20
+                estimation += 40
                 pos_value = 0
                 if x == 7 or x == 0:
                     pos_value += 1
@@ -39,14 +39,14 @@ def evaluate(board: 'game_board', turn):
                     pos_value += 1
                 estimation += pos_value
             elif square == 'x':
-                estimation -= 10
+                estimation -= 20
                 pos_value = 0
                 pos_value -= x
                 if y == 0 or y == 7:
                     pos_value -= 1
                 estimation += pos_value
             elif square == 'o':
-                estimation += 10
+                estimation += 20
                 pos_value = 0
                 pos_value += (7 - x)
                 if y == 0 or y == 7:
@@ -106,10 +106,10 @@ def alp_bet(board: 'game_board', turn, depth, alpha=-1000, beta=1000):
     :param beta: current beta value, defaults to 1000
     :param type: int
     """
-    if depth == 0 or evaluate(board, turn) in [1000, -1000]:
+    if depth == 0 or evaluate(board, turn) in [1000000, -1000000]:
         return evaluate(board, turn)
     if turn:
-        value = -1000
+        value = -1000000
         moves = get_all_moves(board, turn)
         for move in moves:
             x1, y1 = move.origin()
@@ -124,7 +124,7 @@ def alp_bet(board: 'game_board', turn, depth, alpha=-1000, beta=1000):
                 break
         return value
     else:
-        value = 1000
+        value = 1000000
         moves = get_all_moves(board, turn)
         for move in moves:
             x1, y1 = move.origin()
@@ -138,3 +138,39 @@ def alp_bet(board: 'game_board', turn, depth, alpha=-1000, beta=1000):
             if beta <= alpha:
                 break
         return value
+
+
+def algorithm(board: 'game_board', turn, depth):
+    """
+    Algorithm calculates what is the best move in the position looking n move
+    forward
+
+    :param board: current position on the board
+    :param type: game_board
+    :param turn: is it 'o' turn (1), or 'x' turn (0)
+    :param type: bool
+    :param depht: how deep shoud the pruning be
+    :param type: int
+    """
+    best_move = None
+    if turn:
+        best_evaluation = -1000001
+    else:
+        best_evaluation = 1000001
+    all_moves = get_all_moves(board, turn)
+    for move in all_moves:
+        x1, y1 = move.origin()
+        x2, y2 = move.destination()
+        new_board = deepcopy(board)
+        prom = new_board.is_it_a_promotion(x1, y1, x2)
+        new_board.make_a_move(move)
+        new_t = change_turn(turn, new_board, prom, move)
+        if turn:
+            if alp_bet(new_board, new_t, depth-1) > best_evaluation:
+                best_move = move
+        else:
+            if alp_bet(new_board, new_t, depth-1) < best_evaluation:
+                best_move = move
+    x1, y1 = best_move.origin()
+    x2, y2 = best_move.destination()
+    return x1, y1, x2, y2

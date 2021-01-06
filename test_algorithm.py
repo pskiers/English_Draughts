@@ -64,7 +64,7 @@ def test_evaluate_standard2():
         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
     ]
     board = game_board(board1)
-    assert evaluate(board, 1) == evaluate(board, 0) == 19
+    assert evaluate(board, 1) == evaluate(board, 0) == 39
 
 
 def test_evaluate_o_won():
@@ -79,7 +79,7 @@ def test_evaluate_o_won():
         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
     ]
     board = game_board(board1)
-    assert evaluate(board, 0) == 1000
+    assert evaluate(board, 0) == 1000000
 
 
 def test_evaluate_x_won():
@@ -94,7 +94,7 @@ def test_evaluate_x_won():
         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
     ]
     board = game_board(board1)
-    assert evaluate(board, 1) == -1000
+    assert evaluate(board, 1) == -1000000
 
 
 def test_evaluate_one_side_with_no_moves():
@@ -109,8 +109,8 @@ def test_evaluate_one_side_with_no_moves():
         [' ', ' ', ' ', ' ', 'o', ' ', ' ', ' '],
     ]
     board = game_board(board1)
-    assert evaluate(board, 0) == 1000
-    assert evaluate(board, 1) == 3
+    assert evaluate(board, 0) == 1000000
+    assert evaluate(board, 1) == 13
 
 
 def test_alp_bet_standard():
