@@ -1,6 +1,7 @@
 from game_board import game_board
 from moves import capture, push
 from players import Player
+from turn_changer import change_turn
 from Errors import (
     SquareTakenError,
     NoPieceOnTheSquareError,
@@ -110,7 +111,7 @@ class game:
                 except (TypeError, ValueError):
                     print('Please enter some real coordinates')
                     continue
-            pormotion = self.board.is_it_a_promotion(x1, y1, x2)
+            promotion = self.board.is_it_a_promotion(x1, y1, x2)
             if self.gameboard()[x1][y1] in pieces[turn]:
                 print('You can only move your own pieces')
                 continue
@@ -131,11 +132,4 @@ class game:
             except PawnMovingBackwardsError:
                 print('You cannot move backwards')
                 continue
-            if pormotion:
-                turn = (turn + 1) % 2
-            else:
-                if type(move).__name__ == 'capture':
-                    if not self.board.check_if_piece_can_move(x2, y2, 1):
-                        turn = (turn + 1) % 2
-                else:
-                    turn = (turn + 1) % 2
+            turn = change_turn(turn, self.board, promotion, move)

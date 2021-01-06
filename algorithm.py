@@ -1,5 +1,7 @@
 from game_board import game_board
 from moves import push, capture
+from copy import deepcopy
+from turn_changer import change_turn
 
 
 def evaluate(board: 'game_board', turn):
@@ -89,5 +91,50 @@ def get_all_moves(board: 'game_board', turn: bool):
     return all_the_right_moves
 
 
-def alpha_betha(board: 'game_board', turn: bool, depth: int):
-    pass
+def alp_bet(board: 'game_board', turn, depth, alpha=-1000, beta=1000):
+    """
+    Function alp_bet is a standard alpha-beta pruning for english draghts
+
+    :param board: current position on the board
+    :param type: game_board
+    :param turn: is it 'o' turn (1), or 'x' turn (0)
+    :param type: bool
+    :param depht: how deep shoud the pruning be
+    :param type: int
+    :param alpha: current alpha value, defaultst to -1000
+    :param type: int
+    :param beta: current beta value, defaults to 1000
+    :param type: int
+    """
+    if depth == 0 or evaluate(board, turn) in [1000, -1000]:
+        return evaluate(board, turn)
+    if turn:
+        value = -1000
+        moves = get_all_moves(board, turn)
+        for move in moves:
+            x1, y1 = move.origin()
+            x2, y2 = move.destination()
+            new_board = deepcopy(board)
+            prom = new_board.is_it_a_promotion(x1, y1, x2)
+            new_board.make_a_move(move)
+            turn = change_turn(turn, board, prom, move)
+            value = max(value, alp_bet(new_board, turn, depth-1, alpha, beta))
+            alpha = max(alpha, value)
+            if alpha >= beta:
+                break
+        return value
+    else:
+        value = 1000
+        moves = get_all_moves(board, turn)
+        for move in moves:
+            x1, y1 = move.origin()
+            x2, y2 = move.destination()
+            new_board = deepcopy(board)
+            prom = new_board.is_it_a_promotion(x1, y1, x2)
+            new_board.make_a_move(move)
+            turn = change_turn(turn, board, prom, move)
+            value = min(value, alp_bet(new_board, turn, depth-1, alpha, beta))
+            beta = min(beta, value)
+            if beta <= alpha:
+                break
+        return value
