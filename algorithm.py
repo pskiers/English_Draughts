@@ -117,8 +117,8 @@ def alp_bet(board: 'game_board', turn, depth, alpha=-1000, beta=1000):
             new_board = deepcopy(board)
             prom = new_board.is_it_a_promotion(x1, y1, x2)
             new_board.make_a_move(move)
-            turn = change_turn(turn, board, prom, move)
-            value = max(value, alp_bet(new_board, turn, depth-1, alpha, beta))
+            new_t = change_turn(turn, new_board, prom, move)
+            value = max(value, alp_bet(new_board, new_t, depth-1, alpha, beta))
             alpha = max(alpha, value)
             if alpha >= beta:
                 break
@@ -132,8 +132,8 @@ def alp_bet(board: 'game_board', turn, depth, alpha=-1000, beta=1000):
             new_board = deepcopy(board)
             prom = new_board.is_it_a_promotion(x1, y1, x2)
             new_board.make_a_move(move)
-            turn = change_turn(turn, board, prom, move)
-            value = min(value, alp_bet(new_board, turn, depth-1, alpha, beta))
+            new_t = change_turn(turn, new_board, prom, move)
+            value = min(value, alp_bet(new_board, new_t, depth-1, alpha, beta))
             beta = min(beta, value)
             if beta <= alpha:
                 break

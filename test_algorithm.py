@@ -1,4 +1,4 @@
-from algorithm import get_all_moves, evaluate
+from algorithm import get_all_moves, evaluate, alp_bet
 from game_board import game_board
 from moves import capture, push
 
@@ -111,3 +111,7 @@ def test_evaluate_one_side_with_no_moves():
     board = game_board(board1)
     assert evaluate(board, 0) == 1000
     assert evaluate(board, 1) == 3
+
+
+def test_alp_bet_standard():
+    pass
