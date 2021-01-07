@@ -1,6 +1,8 @@
 from Errors import InvalidNameError
 from game_board import game_board
 from algorithm import algorithm
+from cool_interfce import get_coordinates_from_mouse
+import pygame
 
 
 class Player():
@@ -26,11 +28,29 @@ class Player():
         """
         get_move method reads coordinates of a move player wants to make
         """
-        if self.ai() == 0:
-            x1 = int(input('In which row is the piece you want to move '))
-            y1 = int(input('In which column is the piece you want to move '))
-            x2 = int(input('To which row you want to move the piece '))
-            y2 = int(input('To which column you want to move the piece '))
-            return x1, y1, x2, y2
-        else:
-            return algorithm(gameboard, turn, 5)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return
+                else:
+                    if self.ai() == 0:
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            pos = pygame.mouse.get_pos()
+                            x1, y1 = get_coordinates_from_mouse(pos)
+                            x2, y2 = get_destination()
+                            return x1, y1, x2, y2
+                    else:
+                        return algorithm(gameboard, turn, 3)
+
+
+def get_destination():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                x2, y2 = get_coordinates_from_mouse(pos)
+                return x2, y2

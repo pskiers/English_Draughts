@@ -2,6 +2,8 @@ from game_board import game_board
 from moves import capture, push
 from players import Player
 from turn_changer import change_turn
+import pygame
+from cool_interfce import draw_board
 from Errors import (
     SquareTakenError,
     NoPieceOnTheSquareError,
@@ -45,8 +47,18 @@ class game:
         ]
         names = [player0.name, player1.name]
         moves_to_draw = 30
+        # some const for window
+        width, height = 800, 800
+        rowCoun, colCoun = 8, 8
+        sqSize = width // colCoun
+        fps = 60
+        pygame.init()
+        WINDOW = pygame.display.set_mode((width, height))
+        pygame.display.set_caption('English Graughts')
+        clock = pygame.time.Clock()
         while True:
-            print(self.board)
+            clock.tick(fps)
+            draw_board(self.board, WINDOW)
             if moves_to_draw == 0:
                 print('Game ended in a draw')
                 break
@@ -112,6 +124,8 @@ class game:
                     print('Please enter some real coordinates')
                     continue
             promotion = self.board.is_it_a_promotion(x1, y1, x2)
+            if promotion:
+                moves_to_draw = 30
             if self.gameboard()[x1][y1] in pieces[turn]:
                 print('You can only move your own pieces')
                 continue
@@ -133,3 +147,4 @@ class game:
                 print('You cannot move backwards')
                 continue
             turn = change_turn(turn, self.board, promotion, move)
+        pygame.quit()
