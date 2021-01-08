@@ -1,32 +1,18 @@
 import pygame
+width = 800
+height = 800
+pygame.init()
+clock = pygame.time.Clock()
+screen=pygame.display.set_mode((width,height))
+surface = pygame.Surface((width,height), pygame.SRCALPHA)
 
+while True:
+    msElapsed = clock.tick(100)
+    screen.fill((0,0,0,255))
+    pygame.draw.circle(surface,(30,224,33,100),(250,100),10)
+    screen.blit(surface, (0,0))
+    pygame.display.update()
 
-width, height = 800, 800
-rows, cols = 8, 8
-sqsize = width // cols
-red = (255, 0, 0)
-white = (255, 255, 255)
-black = (0, 0, 0)
-blue = (0, 0, 255)
-fps = 60
-
-win = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Checkers')
-
-
-def main():
-    run = True
-    clock = pygame.time.Clock()
-
-    while run:
-        clock.tick(fps)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pass
-    pygame.quit()
-
-
-main()
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            exit()

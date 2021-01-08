@@ -41,7 +41,7 @@ class Player():
                             x2, y2 = get_destination()
                             return x1, y1, x2, y2
                     else:
-                        return algorithm(gameboard, turn, 3)
+                        return algorithm(gameboard, turn, 4)
 
 
 def get_destination():
