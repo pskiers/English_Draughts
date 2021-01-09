@@ -1,14 +1,14 @@
 from game import game
-from players import Player
 from game_board import game_board
+from playerMaker import create_2_players
 
 
 def main():
     board = game_board()
     new_game = game(board)
-    player0 = Player('carlsen', 1)
-    player1 = Player('nakamura', 0)
+    player0, player1 = create_2_players()
     new_game.play(player0, player1)
 
 
-main()
+if __name__ == "__main__":
+    main()
