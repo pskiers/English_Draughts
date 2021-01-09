@@ -4,6 +4,7 @@ from players import Player
 from turn_changer import change_turn
 import pygame
 from cool_interfce import draw_board
+from Constants import fps, width, height
 from Errors import (
     SquareTakenError,
     NoPieceOnTheSquareError,
@@ -47,18 +48,13 @@ class game:
         ]
         names = [player0.name, player1.name]
         moves_to_draw = 30
-        # some const for window
-        width, height = 800, 800
-        rowCoun, colCoun = 8, 8
-        sqSize = width // colCoun
-        fps = 60
         pygame.init()
-        WINDOW = pygame.display.set_mode((width, height))
+        WIN = pygame.display.set_mode((width, height))
         pygame.display.set_caption('English Graughts')
         clock = pygame.time.Clock()
         while True:
             clock.tick(fps)
-            draw_board(self.board, WINDOW)
+            draw_board(self.board, WIN)
             if moves_to_draw == 0:
                 print('Game ended in a draw')
                 break
@@ -66,13 +62,15 @@ class game:
                 print(f"It is {names[turn]}'s turn")
                 if turn == 0:
                     try:
-                        x1, y1, x2, y2 = player0.get_move(self.board, turn)
+                        t = turn
+                        x1, y1, x2, y2 = player0.get_move(self.board, t, WIN)
                     except Exception:
                         print('Please enter real coordinates')
                         continue
                 else:
                     try:
-                        x1, y1, x2, y2 = player1.get_move(self.board, turn)
+                        t = turn
+                        x1, y1, x2, y2 = player1.get_move(self.board, t, WIN)
                     except Exception:
                         print('Please enter real coordinates')
                         continue
@@ -98,13 +96,15 @@ class game:
                 print(f"It is {names[turn]}'s turn")
                 if turn == 0:
                     try:
-                        x1, y1, x2, y2 = player0.get_move(self.board, turn)
+                        t = turn
+                        x1, y1, x2, y2 = player0.get_move(self.board, t, WIN)
                     except Exception:
                         print('Please enter real coordinates')
                         continue
                 else:
                     try:
-                        x1, y1, x2, y2 = player1.get_move(self.board, turn)
+                        t = turn
+                        x1, y1, x2, y2 = player1.get_move(self.board, t, WIN)
                     except Exception:
                         print('Please enter real coordinates')
                         continue
