@@ -4,10 +4,10 @@ blue = (0, 0, 255)
 black = (0, 0, 0)
 green = (0, 255, 0)
 
-width, height = 800, 800
+width, height = 700, 800
 rowCoun, colCoun = 8, 8
 
 sqSize = width // colCoun
 radiusB = sqSize // 2 - 10
-radiusS = radiusB - 20
+radiusS = radiusB - 15
 fps = 60

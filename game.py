@@ -3,7 +3,7 @@ from moves import capture, push
 from players import Player
 from turn_changer import change_turn
 import pygame
-from cool_interfce import draw_board
+from cool_interfce import draw_board, print_text
 from Constants import fps, width, height
 from Errors import (
     CoordinatesNotOnTheBoardError,
@@ -51,10 +51,11 @@ class game:
             clock.tick(fps)
             draw_board(self.board, WIN)
             if moves_to_draw == 0:
-                print('Game ended in a draw')
+                print_text('Game ended in a draw', WIN, 1)
                 break
             if self.board.can_make_a_move(turn, 1):
-                print(f"It is {names[turn]}'s turn")
+                text = f"It is {names[turn]}'s turn"
+                print_text(text, WIN)
                 if turn == 0:
                     t = turn
                     x1, y1, x2, y2 = player0.get_move(self.board, t, WIN)
@@ -65,22 +66,25 @@ class game:
                     move = capture((x1, y1), (x2, y2))
                     moves_to_draw = 30
                 except CoordinatesNotOnTheBoardError:
-                    print('Please enter coordinates that are on the board')
+                    msg = 'Please enter coordinates that are on the board'
+                    print_text(msg, WIN, 1)
                     continue
                 except ChosenWitheSquareError:
-                    print('Coordinates cannot point on a white sqare')
+                    msg = 'Coordinates cannot point on a white sqare'
+                    print_text(msg, WIN, 1)
                     continue
                 except NotACaptureMoveError:
-                    print('You must make a capture move, if you can')
+                    msg = 'You must make a capture move, if you can'
+                    print_text(msg, WIN, 1)
                     continue
                 except (TypeError, ValueError):
-                    print('Please enter some real coordinates')
+                    print_text('Please enter some real coordinates', WIN, 1)
                     continue
             else:
                 if not self.board.can_make_a_move(turn, 0):
-                    print(f'{names[turn]} has lost')
+                    print_text(f'{names[turn]} has lost', WIN, 1)
                     break
-                print(f"It is {names[turn]}'s turn")
+                print_text(f"It is {names[turn]}'s turn", WIN)
                 if turn == 0:
                     t = turn
                     x1, y1, x2, y2 = player0.get_move(self.board, t, WIN)
@@ -91,27 +95,31 @@ class game:
                     move = push((x1, y1), (x2, y2))
                     moves_to_draw -= 1
                 except CoordinatesNotOnTheBoardError:
-                    print('Please enter coordinates that are on the board')
+                    msg = 'Please enter coordinates that are on the board'
+                    print_text(msg, WIN, 1)
                     continue
                 except ChosenWitheSquareError:
-                    print('Coordinates cannot point to a white sqare')
+                    msg = 'Coordinates cannot point to a white sqare'
+                    print_text(msg, WIN, 1)
                     continue
                 except NotAPushMoveError:
-                    print('You must make a push since only those are possible')
+                    msg = 'You must make a push since only those are possible'
+                    print_text(msg, WIN, 1)
                     continue
                 except (TypeError, ValueError):
-                    print('Please enter some real coordinates')
+                    print_text('Please enter some real coordinates', WIN, 1)
                     continue
             promotion = self.board.is_it_a_promotion(x1, y1, x2)
             if promotion:
                 moves_to_draw = 30
             if self.gameboard()[x1][y1] in pieces[turn]:
-                print('You can only move your own pieces')
+                print_text('You can only move your own pieces', WIN, 1)
                 continue
-            msg = not self.board.make_a_move(move)
+            msg = self.board.make_a_move(move)
             if msg:
-                print(msg)
-            else:
+                print_text(msg, WIN, 1)
                 continue
+            else:
+                pass
             turn = change_turn(turn, self.board, promotion, move)
         pygame.quit()

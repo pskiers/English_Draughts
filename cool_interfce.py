@@ -1,4 +1,5 @@
 import pygame
+import time
 from Constants import (
     red, white, blue, black,
     radiusB, radiusS,
@@ -74,3 +75,12 @@ def get_coordinates_from_mouse(pos):
     row = y // sq
     col = x // sq
     return row, col
+
+
+def print_text(text, WIN, pause=0):
+    newfont = pygame.font.SysFont('text box', 32)
+    toblit = newfont.render(text, 0, white, black)
+    WIN.blit(toblit, (0, 700))
+    pygame.display.update()
+    if pause:
+        time.sleep(1)
