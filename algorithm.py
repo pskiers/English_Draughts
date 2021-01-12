@@ -2,6 +2,7 @@ from game_board import game_board
 from moves import push, capture
 from copy import deepcopy
 from turn_changer import change_turn
+from Errors import CoordinatesNotOnTheBoardError
 
 
 def evaluate(board: 'game_board', turn):
@@ -75,19 +76,22 @@ def get_all_moves(board: 'game_board', turn: bool):
         [1, -1],
         [2, -2],
     ]
-    captures = board.can_make_a_move(turn, 1)
+    capt = board.can_make_a_move(turn, 1)
 
     for i in range(len(board.board())):
         for j in range((i+1) % 2, len(board.board()[i]), 2):
             if board.board()[i][j] in pieces[turn]:
-                for dx in jump[captures]:
-                    for dy in jump[captures]:
-                        if board.is_this_move_legal(i, j, dx, dy, captures):
-                            if captures:
-                                move = capture((i, j), (i+dx, j+dy))
-                            else:
-                                move = push((i, j), (i+dx, j+dy))
-                            all_the_right_moves.append(move)
+                for dx in jump[capt]:
+                    for dy in jump[capt]:
+                        try:
+                            if board.is_this_move_legal(i, j, dx, dy, capt):
+                                if capt:
+                                    move = capture((i, j), (i+dx, j+dy))
+                                else:
+                                    move = push((i, j), (i+dx, j+dy))
+                                all_the_right_moves.append(move)
+                        except CoordinatesNotOnTheBoardError:
+                            pass
     return all_the_right_moves
 
 

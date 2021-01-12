@@ -145,8 +145,7 @@ def test_just_move():
 
 def test_just_bad_move():
     board = game_board()
-    with pytest.raises(SquareTakenError):
-        board.just_move(6, 1, 5, 0, 0)
+    assert board.just_move(6, 1, 5, 0, 0) == 'This square is already taken'
 
 
 def test_standard_move_an_o():
@@ -203,8 +202,7 @@ def test_bad_move_an_o():
         ['o', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
     ]
     board = game_board(board2)
-    with pytest.raises(PawnMovingBackwardsError):
-        board.move_an_o(4, 1, 5, 0, 0)
+    assert board.move_an_o(4, 1, 5, 0, 0) == 'You cannot move backwards'
 
 
 def test_standard_move_an_x():
@@ -261,8 +259,7 @@ def test_bad_move_an_x():
         ['o', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
     ]
     board = game_board(board2)
-    with pytest.raises(PawnMovingBackwardsError):
-        board.move_an_x(3, 0, 2, 1, 0)
+    assert board.move_an_x(3, 0, 2, 1, 0) == 'You cannot move backwards'
 
 
 def test_remove_captured_piece():
@@ -303,8 +300,7 @@ def test_bad_remove_captured_piece():
         ['o', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
     ]
     board = game_board(board2)
-    with pytest.raises(CapturingNothingError):
-        board.remove_captured_piece(5, 0, 3, 2)
+    assert board.remove_captured_piece(5, 0, 3, 2) == 'You cannot capture nothing'
 
 
 def test_bad_remove_captured_piece2():
@@ -319,8 +315,7 @@ def test_bad_remove_captured_piece2():
         ['o', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
     ]
     board = game_board(board2)
-    with pytest.raises(CapturingYourOwnPiceError):
-        board.remove_captured_piece(6, 1, 4, 3)
+    assert board.remove_captured_piece(6, 1, 4, 3) == 'You cannot capture your own piece'
 
 
 def test_PUSH_or_capture_o():
@@ -441,8 +436,7 @@ def test_push_or_capture_king():
 def test_bad_push_or_capture():
     board = game_board()
     move = push((4, 1), (3, 2))
-    with pytest.raises(NoPieceOnTheSquareError):
-        board.push_or_capture(move, 0)
+    assert board.push_or_capture(move, 0) == 'There is no piece on this square'
 
 
 def test_make_a_move_push():

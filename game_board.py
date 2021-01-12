@@ -5,12 +5,8 @@ from Errors import (
     NotAllowedThingOnTheBoardError,
     NonIterableRowError,
     NonIterableBoardError,
-    SquareTakenError,
-    NoPieceOnTheSquareError,
-    CapturingNothingError,
-    CapturingYourOwnPiceError,
     NotAMoveError,
-    PawnMovingBackwardsError,
+    CoordinatesNotOnTheBoardError,
 )
 from moves import push, capture
 from copy import deepcopy
@@ -97,9 +93,9 @@ class game_board:
         :param type: class push or class capture
         """
         if type(move).__name__ == 'push':
-            self.push_or_capture(move, 0)
+            return self.push_or_capture(move, 0)
         elif type(move).__name__ == 'capture':
-            self.push_or_capture(move, 1)
+            return self.push_or_capture(move, 1)
         else:
             raise NotAMoveError()
 
@@ -119,9 +115,11 @@ class game_board:
         rmy = int((y2 + y1) / 2)
         captured = self.board()[rmx][rmy]
         if captured == ' ':
-            raise CapturingNothingError()
+            msg = 'You cannot capture nothing'
+            return msg
         elif captured.lower() == self.board()[x1][y1].lower():
-            raise CapturingYourOwnPiceError()
+            msg = 'You cannot capture your own piece'
+            return msg
         else:
             self.board()[rmx][rmy] = ' '
 
@@ -138,13 +136,14 @@ class game_board:
         x1, y1 = move.origin()
         x2, y2 = move.destination()
         if self.board()[x1][y1] == 'o':
-            self.move_an_o(x1, y1, x2, y2, op)
+            return self.move_an_o(x1, y1, x2, y2, op)
         elif self.board()[x1][y1] == 'x':
-            self.move_an_x(x1, y1, x2, y2, op)
+            return self.move_an_x(x1, y1, x2, y2, op)
         elif self.board()[x1][y1] == ' ':
-            raise NoPieceOnTheSquareError()
+            msg = 'There is no piece on this square'
+            return msg
         else:
-            self.just_move(x1, y1, x2, y2, op)
+            return self.just_move(x1, y1, x2, y2, op)
 
     def just_move(self, x1, y1, x2, y2, op: bool):
         """
@@ -163,11 +162,15 @@ class game_board:
         """
         if self.board()[x2][y2] == ' ':
             if op == 1:
-                self.remove_captured_piece(x1, y1, x2, y2)
+                if self.remove_captured_piece(x1, y1, x2, y2):
+                    return self.remove_captured_piece(x1, y1, x2, y2)
+                else:
+                    pass
             self.board()[x2][y2] = self.board()[x1][y1]
             self.board()[x1][y1] = ' '
         else:
-            raise SquareTakenError()
+            msg = 'This square is already taken'
+            return msg
 
     def move_an_o(self, x1, y1, x2, y2, op: bool):
         """
@@ -185,11 +188,12 @@ class game_board:
         :param op: bool
         """
         if x1 < x2:
-            raise PawnMovingBackwardsError()
+            msg = 'You cannot move backwards'
+            return msg
         else:
             if x2 == 0:
                 self.board()[x1][y1] = 'O'
-            self.just_move(x1, y1, x2, y2, op)
+            return self.just_move(x1, y1, x2, y2, op)
 
     def move_an_x(self, x1, y1, x2, y2, op: bool):
         """
@@ -207,11 +211,12 @@ class game_board:
         :param op: bool
         """
         if x1 > x2:
-            raise PawnMovingBackwardsError()
+            msg = 'You cannot move backwards'
+            return msg
         else:
             if x2 == 7:
                 self.board()[x1][y1] = 'X'
-            self.just_move(x1, y1, x2, y2, op)
+            return self.just_move(x1, y1, x2, y2, op)
 
     def can_make_a_move(self, who: bool, capt: bool):
         """
@@ -252,8 +257,11 @@ class game_board:
             jump = [-1, 1]
         for dx in jump:
             for dy in jump:
-                if self.is_this_move_legal(x, y, dx, dy, capt):
-                    return True
+                try:
+                    if self.is_this_move_legal(x, y, dx, dy, capt):
+                        return True
+                except CoordinatesNotOnTheBoardError:
+                    pass
         return False
 
     def is_this_move_legal(self, x, y, dx, dy, capt):
@@ -272,15 +280,14 @@ class game_board:
         :param type: bool
         """
         test = deepcopy(self)
-        try:
-            if capt:
-                move = capture((x, y), (x+dx, y+dy))
-            else:
-                move = push((x, y), (x+dx, y+dy))
-            test.make_a_move(move)
-            return True
-        except Exception:
+        if capt:
+            move = capture((x, y), (x+dx, y+dy))
+        else:
+            move = push((x, y), (x+dx, y+dy))
+        if test.make_a_move(move):
             return False
+        else:
+            return True
 
     def is_it_a_promotion(self, x1, y1, x2):
         """

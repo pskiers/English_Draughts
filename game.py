@@ -6,11 +6,6 @@ import pygame
 from cool_interfce import draw_board
 from Constants import fps, width, height
 from Errors import (
-    SquareTakenError,
-    NoPieceOnTheSquareError,
-    CapturingNothingError,
-    CapturingYourOwnPiceError,
-    PawnMovingBackwardsError,
     CoordinatesNotOnTheBoardError,
     ChosenWitheSquareError,
     NotAPushMoveError,
@@ -61,19 +56,11 @@ class game:
             if self.board.can_make_a_move(turn, 1):
                 print(f"It is {names[turn]}'s turn")
                 if turn == 0:
-                    try:
-                        t = turn
-                        x1, y1, x2, y2 = player0.get_move(self.board, t, WIN)
-                    except Exception:
-                        print('Please enter real coordinates')
-                        continue
+                    t = turn
+                    x1, y1, x2, y2 = player0.get_move(self.board, t, WIN)
                 else:
-                    try:
-                        t = turn
-                        x1, y1, x2, y2 = player1.get_move(self.board, t, WIN)
-                    except Exception:
-                        print('Please enter real coordinates')
-                        continue
+                    t = turn
+                    x1, y1, x2, y2 = player1.get_move(self.board, t, WIN)
                 try:
                     move = capture((x1, y1), (x2, y2))
                     moves_to_draw = 30
@@ -95,19 +82,11 @@ class game:
                     break
                 print(f"It is {names[turn]}'s turn")
                 if turn == 0:
-                    try:
-                        t = turn
-                        x1, y1, x2, y2 = player0.get_move(self.board, t, WIN)
-                    except Exception:
-                        print('Please enter real coordinates')
-                        continue
+                    t = turn
+                    x1, y1, x2, y2 = player0.get_move(self.board, t, WIN)
                 else:
-                    try:
-                        t = turn
-                        x1, y1, x2, y2 = player1.get_move(self.board, t, WIN)
-                    except Exception:
-                        print('Please enter real coordinates')
-                        continue
+                    t = turn
+                    x1, y1, x2, y2 = player1.get_move(self.board, t, WIN)
                 try:
                     move = push((x1, y1), (x2, y2))
                     moves_to_draw -= 1
@@ -129,22 +108,10 @@ class game:
             if self.gameboard()[x1][y1] in pieces[turn]:
                 print('You can only move your own pieces')
                 continue
-            try:
-                self.board.make_a_move(move)
-            except SquareTakenError:
-                print('You cannot move to a sqare that is already taken')
-                continue
-            except NoPieceOnTheSquareError:
-                print('You cannot move nothing')
-                continue
-            except CapturingNothingError:
-                print('You cannot capture nothing')
-                continue
-            except CapturingYourOwnPiceError:
-                print('You cannot capture your own piece')
-                continue
-            except PawnMovingBackwardsError:
-                print('You cannot move backwards')
+            msg = not self.board.make_a_move(move)
+            if msg:
+                print(msg)
+            else:
                 continue
             turn = change_turn(turn, self.board, promotion, move)
         pygame.quit()
