@@ -6,3 +6,4 @@ def test_createAGame():
     board = game_board()
     game1 = game(board)
     assert game1.gameboard() == board.board()
+    assert game1.board == board
