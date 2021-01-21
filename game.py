@@ -33,7 +33,7 @@ class game:
 
         :param player0: 'o' pieces player
         :param type: class Player
-        :param player1: 'x: pieces player
+        :param player1: 'x' pieces player
         :param type: class Player
         """
         turn = 1
@@ -58,10 +58,14 @@ class game:
                 print_text(text, WIN)
                 if turn == 0:
                     t = turn
-                    x1, y1, x2, y2 = player0.get_move(self.board, t, WIN)
+                    x1, y1, x2, y2, run = player0.get_move(self.board, t, WIN)
+                    if not run:
+                        break
                 else:
                     t = turn
-                    x1, y1, x2, y2 = player1.get_move(self.board, t, WIN)
+                    x1, y1, x2, y2, run = player1.get_move(self.board, t, WIN)
+                    if not run:
+                        break
                 try:
                     move = capture((x1, y1), (x2, y2))
                     moves_to_draw = 30
@@ -87,10 +91,14 @@ class game:
                 print_text(f"It is {names[turn]}'s turn", WIN)
                 if turn == 0:
                     t = turn
-                    x1, y1, x2, y2 = player0.get_move(self.board, t, WIN)
+                    x1, y1, x2, y2, run = player0.get_move(self.board, t, WIN)
+                    if not run:
+                        break
                 else:
                     t = turn
-                    x1, y1, x2, y2 = player1.get_move(self.board, t, WIN)
+                    x1, y1, x2, y2, run = player1.get_move(self.board, t, WIN)
+                    if not run:
+                        break
                 try:
                     move = push((x1, y1), (x2, y2))
                     moves_to_draw -= 1

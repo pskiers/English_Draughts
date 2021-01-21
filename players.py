@@ -16,12 +16,16 @@ class Player():
     :param ai: informs whether the player is and AI
     :param type: bool
     """
-    def __init__(self, name: str, ai: bool):
+    def __init__(self, name: str, ai: bool, depth=0):
         if name.isalpha():
             self.name = name.title()
         else:
             raise InvalidNameError()
         self._ai = ai
+        if not ai:
+            self.depth = 0
+        else:
+            self.depth = depth
 
     def ai(self):
         return self._ai
@@ -41,7 +45,7 @@ class Player():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    return
+                    return 0, 0, 0, 0, False
                 else:
                     if self.ai() == 0:
                         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -51,12 +55,13 @@ class Player():
                             y = sqSize * y1 + sqSize // 2
                             pygame.gfxdraw.circle(WIN, y, x, radiusB+2, green)
                             pygame.display.update()
-                            x2, y2 = get_destination()
+                            x2, y2, run = get_destination()
                             pygame.gfxdraw.circle(WIN, y, x, radiusB+2, black)
                             pygame.display.update()
-                            return x1, y1, x2, y2
+                            return x1, y1, x2, y2, run
                     else:
-                        return algorithm(gameboard, turn, 4)
+                        x1, y1, x2, y2 = algorithm(gameboard, turn, self.depth)
+                        return x1, y1, x2, y2, True
 
 
 def get_destination():
@@ -68,8 +73,8 @@ def get_destination():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                return
+                return 0, 0, False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 x2, y2 = get_coordinates_from_mouse(pos)
-                return x2, y2
+                return x2, y2, True
