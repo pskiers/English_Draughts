@@ -2,7 +2,6 @@ from game_board import game_board
 from moves import push, capture
 from copy import deepcopy
 from turn_changer import change_turn
-from Errors import CoordinatesNotOnTheBoardError
 
 
 def evaluate(board: 'game_board', turn):
@@ -17,12 +16,14 @@ def evaluate(board: 'game_board', turn):
     :param type: bool
     """
     estimation = 0
-    if not board.can_make_a_move(turn, 1):
+    if not board.can_make_a_move(turn, capt=1):
         if not board.can_make_a_move(turn, 0):
+            # player cannot make a move so he lost
             return 1000000 * (1 - (turn * 2))
     for x in range(len(board.board())):
         for y in range((x+1) % 2, len(board.board()[x]), 2):
             square = board.board()[x][y]
+            # estimating and adding value of piece to estimation
             if square == 'X':
                 estimation -= 40
                 pos_value = 0
@@ -76,21 +77,25 @@ def get_all_moves(board: 'game_board', turn: bool):
         [1, -1],
         [2, -2],
     ]
+    # checking for any captures
     capt = board.can_make_a_move(turn, 1)
-
+    # for every black square
     for i in range(len(board.board())):
         for j in range((i+1) % 2, len(board.board()[i]), 2):
+            # if piece belongs to player on the move
             if board.board()[i][j] in pieces[turn]:
+                # for every potentially legal move
                 for dx in jump[capt]:
                     for dy in jump[capt]:
-                        try:
+                        # if jump lands on the board
+                        if i+dx in range(8) and j+dy in range(8):
                             if board.is_this_move_legal(i, j, dx, dy, capt):
                                 if capt:
                                     move = capture((i, j), (i+dx, j+dy))
                                 else:
                                     move = push((i, j), (i+dx, j+dy))
                                 all_the_right_moves.append(move)
-                        except CoordinatesNotOnTheBoardError:
+                        else:
                             pass
     return all_the_right_moves
 
@@ -111,35 +116,46 @@ def alp_bet(board: 'game_board', turn, depth, alpha=-1000000, beta=1000000):
     :param type: int
     """
     if depth == 0 or evaluate(board, turn) in [1000000, -1000000]:
+        # if depth is 0 or node is terminal
         return evaluate(board, turn)
     if turn:
+        # minus infinity equivalent
         value = -1000000
         moves = get_all_moves(board, turn)
+        # for each child of the node
         for move in moves:
             x1, y1 = move.origin()
             x2, y2 = move.destination()
+            # creating a "child" board
             new_board = deepcopy(board)
             prom = new_board.is_it_a_promotion(x1, y1, x2)
             new_board.make_a_move(move)
+            # calculating new turn value
             new_t = change_turn(turn, new_board, prom, move)
             value = max(value, alp_bet(new_board, new_t, depth-1, alpha, beta))
             alpha = max(alpha, value)
             if alpha >= beta:
+                # beta cutoff
                 break
         return value
     else:
+        # plus infinity equivalent
         value = 1000000
         moves = get_all_moves(board, turn)
+        # for each child of the node
         for move in moves:
             x1, y1 = move.origin()
             x2, y2 = move.destination()
+            # creating a "child" board
             new_board = deepcopy(board)
             prom = new_board.is_it_a_promotion(x1, y1, x2)
             new_board.make_a_move(move)
+            # calculating new turn value
             new_t = change_turn(turn, new_board, prom, move)
             value = min(value, alp_bet(new_board, new_t, depth-1, alpha, beta))
             beta = min(beta, value)
             if beta <= alpha:
+                # alpha cutoff
                 break
         return value
 
@@ -165,15 +181,21 @@ def algorithm(board: 'game_board', turn, depth):
     for move in all_moves:
         x1, y1 = move.origin()
         x2, y2 = move.destination()
+        # creating new board for situation after the move
         new_board = deepcopy(board)
         prom = new_board.is_it_a_promotion(x1, y1, x2)
         new_board.make_a_move(move)
+        # calculating new turn
         new_t = change_turn(turn, new_board, prom, move)
         if turn:
+            # if after the move board has better evaluation than the current
+            # best
             if alp_bet(new_board, new_t, depth-1) > best_evaluation:
                 best_evaluation = alp_bet(new_board, new_t, depth-1)
                 best_move = move
         else:
+            # if after this move board has better evaluation than the current
+            # best
             if alp_bet(new_board, new_t, depth-1) < best_evaluation:
                 best_evaluation = alp_bet(new_board, new_t, depth-1)
                 best_move = move

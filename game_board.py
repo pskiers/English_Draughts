@@ -6,7 +6,6 @@ from Errors import (
     NonIterableRowError,
     NonIterableBoardError,
     NotAMoveError,
-    CoordinatesNotOnTheBoardError,
 )
 from moves import push, capture
 from copy import deepcopy
@@ -30,6 +29,8 @@ class game_board:
         self.set_board(board)
 
     def __str__(self):
+        # module for text version of the game and debuging
+        # otherwise not very useful
         board = '____________________________________________________\n'
         i = 0
         for row in self.board():
@@ -93,9 +94,9 @@ class game_board:
         :param type: class push or class capture
         """
         if type(move).__name__ == 'push':
-            return self.push_or_capture(move, 0)
+            return self.push_or_capture(move, op=0)
         elif type(move).__name__ == 'capture':
-            return self.push_or_capture(move, 1)
+            return self.push_or_capture(move, op=1)
         else:
             raise NotAMoveError()
 
@@ -111,8 +112,10 @@ class game_board:
         :param y2: destination column of the capturing piece
         :param type: int
         """
+        # calculating coordinates of captured piece
         rmx = int((x2 + x1) / 2)
         rmy = int((y2 + y1) / 2)
+        # captured piece
         captured = self.board()[rmx][rmy]
         if captured == ' ':
             msg = 'You cannot capture nothing'
@@ -121,6 +124,7 @@ class game_board:
             msg = 'You cannot capture your own piece'
             return msg
         else:
+            # deleting captured piece
             self.board()[rmx][rmy] = ' '
 
     def push_or_capture(self, move, op: bool):
@@ -135,14 +139,18 @@ class game_board:
         """
         x1, y1 = move.origin()
         x2, y2 = move.destination()
+        # if piece to be moved is an 'o'
         if self.board()[x1][y1] == 'o':
             return self.move_an_o(x1, y1, x2, y2, op)
+        # if piece to be moved is an 'x'
         elif self.board()[x1][y1] == 'x':
             return self.move_an_x(x1, y1, x2, y2, op)
+        # if there is no piece
         elif self.board()[x1][y1] == ' ':
             msg = 'There is no piece on this square'
             return msg
         else:
+            # if the piece is a king
             return self.just_move(x1, y1, x2, y2, op)
 
     def just_move(self, x1, y1, x2, y2, op: bool):
@@ -160,14 +168,23 @@ class game_board:
         :param op: indicates whether move is a capture move
         :param op: bool
         """
+        # if destination square is empty
         if self.board()[x2][y2] == ' ':
+            # if we are capturing
             if op == 1:
                 if self.remove_captured_piece(x1, y1, x2, y2):
                     return self.remove_captured_piece(x1, y1, x2, y2)
                 else:
                     pass
+            # swaping origin of the move with its destination
             self.board()[x2][y2] = self.board()[x1][y1]
             self.board()[x1][y1] = ' '
+            # making kings
+            if x2 == 0 and self.board()[x2][y2] == 'o':
+                self.board()[x2][y2] = 'O'
+            if x2 == 7 and self.board()[x2][y2] == 'x':
+                self.board()[x2][y2] = 'X'
+        # if destination square is not empty
         else:
             msg = 'This square is already taken'
             return msg
@@ -191,8 +208,6 @@ class game_board:
             msg = 'You cannot move backwards'
             return msg
         else:
-            if x2 == 0:
-                self.board()[x1][y1] = 'O'
             return self.just_move(x1, y1, x2, y2, op)
 
     def move_an_x(self, x1, y1, x2, y2, op: bool):
@@ -214,8 +229,6 @@ class game_board:
             msg = 'You cannot move backwards'
             return msg
         else:
-            if x2 == 7:
-                self.board()[x1][y1] = 'X'
             return self.just_move(x1, y1, x2, y2, op)
 
     def can_make_a_move(self, who: bool, capt: bool):
@@ -228,10 +241,12 @@ class game_board:
         :param capt: do we check for captures (1) or for pushes (0)
         :param type: bool
         """
+        # selecting only our player's pieces
         if who == 0:
             goodPieces = ['x', 'X']
         else:
             goodPieces = ['o', 'O']
+        # for every black square
         for i in range(len(self.board())):
             for j in range((i+1) % 2, len(self.board()[i]), 2):
                 if self.board()[i][j] in goodPieces:
@@ -255,12 +270,14 @@ class game_board:
             jump = [-2, 2]
         else:
             jump = [-1, 1]
+        # for each potentially legal move
         for dx in jump:
             for dy in jump:
-                try:
+                # if jump lands on the board
+                if x+dx in range(8) and y+dy in range(8):
                     if self.is_this_move_legal(x, y, dx, dy, capt):
                         return True
-                except CoordinatesNotOnTheBoardError:
+                else:
                     pass
         return False
 
@@ -279,6 +296,7 @@ class game_board:
         :param capt: do we check for captures (1) or for pushes (0)
         :param type: bool
         """
+        # creating testing board
         test = deepcopy(self)
         if capt:
             move = capture((x, y), (x+dx, y+dy))

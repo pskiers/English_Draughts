@@ -18,11 +18,14 @@ def change_turn(turn: bool, board: 'game_board', promotion: bool, move):
     """
     x2, y2 = move.destination()
     if promotion:
+        # promotion always changes a turn
         turn = (turn + 1) % 2
     else:
+        # if the move was a capture
         if type(move).__name__ == 'capture':
             if not board.check_if_piece_can_move(x2, y2, 1):
                 turn = (turn + 1) % 2
+        # if move was not a capture
         else:
             turn = (turn + 1) % 2
     return turn

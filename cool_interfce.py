@@ -31,6 +31,7 @@ def draw_checkerboard(board, WIN):
     :param type: pygame.display
     """
     WIN.fill(black)
+    # for each soon to be white square
     for row in range(len(board.board())):
         for col in range(row % 2, len(board.board()), 2):
             pygame.draw.rect(WIN, white, (row*sq, col*sq, sq, sq))
@@ -44,9 +45,11 @@ def draw_pieces(board, WINDOW):
     :param type: game_board
     :param WINDOW: window where the pieces are suposed to be displayed
     """
+    # for each white square
     for row in range(len(board.board())):
-        for col in range((1+row) % 2, len(board.board()), 2, ):
+        for col in range((1+row) % 2, len(board.board()), 2):
             csq = board.board()[row][col]
+            # calculating square center
             x = sq * col + sq // 2
             y = sq * row + sq // 2
             if csq == 'x':
@@ -78,6 +81,15 @@ def get_coordinates_from_mouse(pos):
 
 
 def print_text(text, WIN, pause=0):
+    """
+    Function prints text in pygame window
+
+    :parap text: text to print
+    :param type: str
+    :param WIN: pygame window
+    :param paues: decides if ther is a pause after bliting text
+    :param type: bool
+    """
     newfont = pygame.font.SysFont('text box', 32)
     toblit = newfont.render(text, 0, white, black)
     WIN.blit(toblit, (10, 740))
