@@ -176,14 +176,13 @@ class game_board:
                     return self.remove_captured_piece(x1, y1, x2, y2)
                 else:
                     pass
+            prom = self.is_it_a_promotion(x1, y1, x2)
             # swaping origin of the move with its destination
             self.board()[x2][y2] = self.board()[x1][y1]
             self.board()[x1][y1] = ' '
             # making kings
-            if x2 == 0 and self.board()[x2][y2] == 'o':
-                self.board()[x2][y2] = 'O'
-            if x2 == 7 and self.board()[x2][y2] == 'x':
-                self.board()[x2][y2] = 'X'
+            if prom:
+                self.board()[x2][y2] = self.board()[x2][y2].upper()
         # if destination square is not empty
         else:
             msg = 'This square is already taken'

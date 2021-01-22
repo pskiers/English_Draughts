@@ -1,6 +1,5 @@
 from game import game
 from game_board import game_board
-import pygame
 
 
 def test_createAGame():

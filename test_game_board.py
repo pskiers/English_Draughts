@@ -7,11 +7,6 @@ from Errors import (
     NotAllowedThingOnTheBoardError,
     NonIterableRowError,
     NonIterableBoardError,
-    PawnMovingBackwardsError,
-    SquareTakenError,
-    CapturingNothingError,
-    CapturingYourOwnPiceError,
-    NoPieceOnTheSquareError,
     NotAMoveError,
 )
 from game_board import game_board
@@ -300,7 +295,8 @@ def test_bad_remove_captured_piece():
         ['o', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
     ]
     board = game_board(board2)
-    assert board.remove_captured_piece(5, 0, 3, 2) == 'You cannot capture nothing'
+    msg = 'You cannot capture nothing'
+    assert board.remove_captured_piece(5, 0, 3, 2) == msg
 
 
 def test_bad_remove_captured_piece2():
@@ -315,7 +311,8 @@ def test_bad_remove_captured_piece2():
         ['o', ' ', 'o', ' ', 'o', ' ', 'o', ' '],
     ]
     board = game_board(board2)
-    assert board.remove_captured_piece(6, 1, 4, 3) == 'You cannot capture your own piece'
+    msg = 'You cannot capture your own piece'
+    assert board.remove_captured_piece(6, 1, 4, 3) == msg
 
 
 def test_PUSH_or_capture_o():
